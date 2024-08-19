@@ -16,8 +16,8 @@ const Signin = () => {
         className="hidden lg:flex md:flex w-[100%] lg:w-[50%] md:w-[50%] bg-[#000]/50 bg-cover bg-center bg-blend-overlay h-[100vh]"
         style={{ backgroundImage: `url(${heroImg})` }}
       ></div>
-      <div className="w-[100%] lg:w-[50%] md:w-[50%] lg:p-6 md:p-6 flex flex-col p-4 h-[100vh]">
-        <img src={logo} alt="" className="w-[150px] mt-6 self-end" />
+      <div className="w-[100%] lg:w-[50%] md:w-[50%] lg:p-6 md:p-6 flex flex-col p-8 h-[100vh]">
+        <img src={logo} alt="" className="w-[150px] mt-6" />
         <div className="w-[100%] lg:w-[80%] md:w-[80%] mx-auto flex flex-col my-auto">
             <h1 className="text-[24px] lg:text-[40px] md:text-[40px] font-[500] mb-12">Welcome Back Admin</h1>
           <input

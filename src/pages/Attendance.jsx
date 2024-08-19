@@ -10,7 +10,7 @@ import {
   Paper,
   Modal,
   Box,
-  Typography,
+  FormControl,
 } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
@@ -88,32 +88,32 @@ const Attendance = () => {
           <TableHead sx={{ backgroundColor: "#0D0042" }}>
             <TableRow>
               <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "18px" }}
+                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
               >
                 ID
               </TableCell>
               <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "18px" }}
+                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
               >
                 Name
               </TableCell>
               <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "18px" }}
+                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
               >
                 Email
               </TableCell>
               <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "18px" }}
+                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
               >
                 Location
               </TableCell>
               <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "18px" }}
+                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
               >
                 Role
               </TableCell>
               <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "18px" }}
+                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
               >
                 Status
               </TableCell>
@@ -148,16 +148,16 @@ const Attendance = () => {
           top: '50%', 
           left: '50%', 
           transform: 'translate(-50%, -50%)', 
-          width: 400, 
           bgcolor: 'background.paper', 
           borderRadius: '20px', 
           boxShadow: 24,
+          width: 400,
         }}>
           {searchResult ? (
-            <div>
+                    <FormControl fullWidth>
               <div className="bg-cover h-[20vh] bg-left-bottom rounded-tr-[20px] rounded-tl-[20px]" style={{ backgroundImage: `url('https://iq.wiki/_next/image/?url=https%3A%2F%2Fipfs.everipedia.org%2Fipfs%2FQmNzPvwsQK5S27rwu2f9boniL7ZfKV2Vo4Xo9svRUMRcc1&w=3840&q=75')` }}>
               </div>
-              <div className="p-6 flex flex-col">
+              <div className="py-6 flex flex-col">
               <p>ID: {searchResult.id}</p>
               <p>Name: {searchResult.name}</p>
               <p>Email: {searchResult.email}</p>
@@ -166,7 +166,7 @@ const Attendance = () => {
               <p>Status: Pending</p>
               <Checkin email={searchResult.email} />
               </div>
-            </div>
+              </FormControl >
           ) : (
             <div className="p-6 flex flex-col items-center">
               <IoCloseSharp className="ml-auto text-4xl" onClick={handleCloseModal} />

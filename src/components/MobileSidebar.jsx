@@ -1,10 +1,12 @@
-import React from 'react'
-import logo from "../assets/hostit.png"
+import React, { useState } from 'react'
+import { Sling as Hamburger } from 'hamburger-react'
+import logo from '../assets/hostit.png'
 import { NavLink } from 'react-router-dom'
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaPeopleGroup } from "react-icons/fa6";
 
-const Sidebar = () => {
+const MobileSidebar = () => {
+    const [isOpen, setOpen] = useState(false);
 
     const activeStyle = {
         backgroundColor: '#F5F5F5',
@@ -17,14 +19,15 @@ const Sidebar = () => {
       };
 
   return (
-    <div className='w-[20%] border-r border-[#dadada] px-6 h-[100vh] bg-white hidden lg:flex md:flex flex-col'>
-        <img src={logo} alt="" className="w-[150px] mt-6 self-end" />
-        <div className='mt-20 flex flex-col'>
+    <div className='lg:hidden md:hidden flex justify-between w-[90%] mx-auto items-center py-4'>
+        <img src={logo} alt="" className="w-[120px]" />
+        <Hamburger toggled={isOpen} toggle={setOpen} />
+        {isOpen && ( <div className='mt-20 flex flex-col absolute bg-white h-[80vh] w-[100%] top-20 left-0 '>
         <NavLink to='/dashboard' className='flex items-center my-4 py-4 px-6 text-[18px] font-[500] hover:text-[#015C28]"' style={({isActive}) => isActive ? activeStyle : null } end><BiSolidDashboard className='mr-2'/>  Dashboard</NavLink>
         <NavLink to='attendance' className='flex items-center my-4 py-4 px-6  text-[18px] font-[500]' style={({isActive}) => isActive ? activeStyle : null }> <FaPeopleGroup className='mr-2' /> Attendance</NavLink>
-        </div>
+        </div>)}
     </div>
   )
 }
 
-export default Sidebar
+export default MobileSidebar
