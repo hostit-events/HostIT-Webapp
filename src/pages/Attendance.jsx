@@ -17,6 +17,7 @@ import { IoIosSend } from "react-icons/io";
 import user from "../assets/user-NF.svg"
 import { IoCloseSharp } from "react-icons/io5";
 import Checkin from "../components/Checkin";
+import DaySelect from "../components/DaySelect";
 
 const Attendance = () => {
   const [data, setData] = useState([]);
@@ -25,6 +26,7 @@ const Attendance = () => {
   const [userInput, setUserInput] = useState('')
   const [searchResult, setSearchResult] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [day, setDay] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,9 +68,26 @@ const Attendance = () => {
     setUserInput('')
   };
 
+  const handleDayChange = (event) => {
+    setDay(event.target.value);
+  };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    borderRadius: '30px',
+    border: '1px solid #e0bb8395',
+    boxShadow: 24,
+    bgcolor: 'background.paper', 
+  };
+
   return (
     <div>
             <h2 className='lg:text-[32px] md:text-[32px] text-[24px] font-[500] mb-6'>Check-Ins</h2>
+            <section className="flex justify-between items-center flex-col lg:flex-row md:flex-row">
         <div className="border-2 text-gray-500 border-[#0D0042] rounded-lg px-4 py-2 flex my-4 justify-between items-center lg:w-[30%] md:w-[30%] w-[100%]">
           <div className="flex items-center">
             <FaSearch className="mr-4" />
@@ -83,6 +102,11 @@ const Attendance = () => {
             <IoIosSend className="text-[#11EBF2]" />
           </button>
         </div>
+        <div className="w-[100%] lg:w-[10%] md:w-[10%] mb-4">
+            <DaySelect day={day} handleDayChange={handleDayChange} />
+          </div>
+        </section>
+        {/* <section className="px-4"> */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead sx={{ backgroundColor: "#0D0042" }}>
@@ -135,6 +159,7 @@ const Attendance = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {/* </section> */}
       <Pagination
         count={Math.ceil(data.length / itemsPerPage)}
         page={currentPage}
@@ -142,31 +167,23 @@ const Attendance = () => {
         color="primary"
         style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
       />
+      <div className="px-4">
       <Modal open={showModal} onClose={handleCloseModal}>
-        <Box sx={{ 
-          position: 'absolute', 
-          top: '50%', 
-          left: '50%', 
-          transform: 'translate(-50%, -50%)', 
-          bgcolor: 'background.paper', 
-          borderRadius: '20px', 
-          boxShadow: 24,
-          width: 400,
-        }}>
+        <Box sx={style}>
           {searchResult ? (
-                    <FormControl fullWidth>
-              <div className="bg-cover h-[20vh] bg-left-bottom rounded-tr-[20px] rounded-tl-[20px]" style={{ backgroundImage: `url('https://iq.wiki/_next/image/?url=https%3A%2F%2Fipfs.everipedia.org%2Fipfs%2FQmNzPvwsQK5S27rwu2f9boniL7ZfKV2Vo4Xo9svRUMRcc1&w=3840&q=75')` }}>
+              <div>
+              <div className="bg-cover h-[20vh] bg-left-bottom rounded-tr-[30px] rounded-tl-[30px]" style={{ backgroundImage: `url('https://iq.wiki/_next/image/?url=https%3A%2F%2Fipfs.everipedia.org%2Fipfs%2FQmNzPvwsQK5S27rwu2f9boniL7ZfKV2Vo4Xo9svRUMRcc1&w=3840&q=75')` }}>
               </div>
-              <div className="py-6 flex flex-col">
+              <div className="py-6 flex flex-col px-8">
               <p>ID: {searchResult.id}</p>
               <p>Name: {searchResult.name}</p>
               <p>Email: {searchResult.email}</p>
               <p>Location: {searchResult.country} {searchResult.location}</p>
               <p>Role: {searchResult.role}</p>
               <p>Status: Pending</p>
-              <Checkin email={searchResult.email} />
+              <Checkin email={searchResult.email} day={day} />
               </div>
-              </FormControl >
+              </div>
           ) : (
             <div className="p-6 flex flex-col items-center">
               <IoCloseSharp className="ml-auto text-4xl" onClick={handleCloseModal} />
@@ -177,6 +194,7 @@ const Attendance = () => {
           )}
         </Box>
       </Modal>
+      </div>
     </div>
   );
 };

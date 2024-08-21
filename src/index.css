@@ -4,7 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   display: none;
+} */
+
+.react-calendar {
+  height: auto;   
+  width: 100%;
+  font-family: Poppins, sans-serif;
+  border-radius: 20px;
+  padding: 20px;
 }
 
+.react-calendar__tile {    
+  padding: 6.6667px;    
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+}

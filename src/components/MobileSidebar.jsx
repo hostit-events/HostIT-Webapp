@@ -22,7 +22,7 @@ const MobileSidebar = () => {
     <div className='lg:hidden md:hidden flex justify-between w-[90%] mx-auto items-center py-4'>
         <img src={logo} alt="" className="w-[120px]" />
         <Hamburger toggled={isOpen} toggle={setOpen} />
-        {isOpen && ( <div className='mt-20 flex flex-col absolute bg-white h-[80vh] w-[100%] top-20 left-0 '>
+        {isOpen && ( <div className='mt-20 flex flex-col absolute bg-white h-[50vh] w-[100%] top-20 left-0 z-50'>
         <NavLink to='/dashboard' className='flex items-center my-4 py-4 px-6 text-[18px] font-[500] hover:text-[#015C28]"' style={({isActive}) => isActive ? activeStyle : null } end><BiSolidDashboard className='mr-2'/>  Dashboard</NavLink>
         <NavLink to='attendance' className='flex items-center my-4 py-4 px-6  text-[18px] font-[500]' style={({isActive}) => isActive ? activeStyle : null }> <FaPeopleGroup className='mr-2' /> Attendance</NavLink>
         </div>)}

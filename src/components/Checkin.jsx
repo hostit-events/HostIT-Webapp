@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Checkin = ({email}) => {
-    console.log(email)
-    const url = "https://hostit-backend-v2.onrender.com/api/attendance";
+const Checkin = ({email, day}) => {
+    console.log(email, day)
+    const url = "https://hostit-backend-v2.onrender.com/api/attendance/verify";
 
-    useEffect(() => {
         const sendData = async () => {
           try {
             const response = await fetch(url, {
@@ -13,12 +13,12 @@ const Checkin = ({email}) => {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ email }),
+              body: JSON.stringify({ email, day }),
             });
     
             if (response.ok) {
               const result = await response.json();
-              toast.success(`Success:, ${result}` , {
+              toast.success(`${result.message}` , {
                 position: "top-center",
               });
             } else {
@@ -33,12 +33,9 @@ const Checkin = ({email}) => {
           }
         };
     
-        sendData();
-      }, [email]); 
-    
   return (
     <div>
-        <button className="w-[100%] px-6 py-2 my-4 font-[700] rounded-full text-[#0D0042] bg-[#11EBF2]">Checkin</button>
+        <button className="w-[100%] px-6 py-4 my-4 font-[700] rounded-full text-[#0D0042] bg-[#11EBF2]" onClick={sendData}>Checkin</button>
     </div>
   )
 }

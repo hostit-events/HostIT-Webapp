@@ -13,7 +13,6 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Signin />} />
-
       <Route path="/dashboard" element={<Layout />}>
       <Route index element={<Dashboard />} />
       <Route path="attendance" element={<Attendance/>} />
@@ -25,7 +24,7 @@ const router = createBrowserRouter(
 
 const App = () => {
   return (
-    <div className="w-full min-h-[100vh] font-poppins bg-[#F5F5F5]">
+    <div className="max-w-[1440px] mx-auto min-h-[100vh] font-poppins bg-[#F5F5F5] w-[100%]">
       <RouterProvider router={router} />
     </div>
   );

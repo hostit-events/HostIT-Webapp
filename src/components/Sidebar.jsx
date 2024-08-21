@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   return (
     <div className='w-[20%] border-r border-[#dadada] px-6 h-[100vh] bg-white hidden lg:flex md:flex flex-col'>
-        <img src={logo} alt="" className="w-[150px] mt-6 self-end" />
+        <img src={logo} alt="" className="w-[150px] mt-6" />
         <div className='mt-20 flex flex-col'>
         <NavLink to='/dashboard' className='flex items-center my-4 py-4 px-6 text-[18px] font-[500] hover:text-[#015C28]"' style={({isActive}) => isActive ? activeStyle : null } end><BiSolidDashboard className='mr-2'/>  Dashboard</NavLink>
         <NavLink to='attendance' className='flex items-center my-4 py-4 px-6  text-[18px] font-[500]' style={({isActive}) => isActive ? activeStyle : null }> <FaPeopleGroup className='mr-2' /> Attendance</NavLink>

@@ -7,6 +7,7 @@ import { GiStarShuriken } from "react-icons/gi";
 const Banner = () => {
   const settings = {
     dots: false,
+    arrows: false,
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -53,11 +54,11 @@ const Banner = () => {
   ];
 
   return (
-   <div>
+   <div className='w-[100%] sticky top-0'>
      <Slider {...settings}>
     {announcements.map((info) => (
-        <div className='bg-[#0D0042] text-[#11EBF2] p-4 w-[100%]' key={info.id}>
-            <p className='flex justify-between items-center font-[600] text-[20px]'>{info.text} <GiStarShuriken /></p>
+        <div className='bg-[#0D0042] text-[#11EBF2] py-4' key={info.id}>
+            <p className='flex justify-between items-center font-[600] text-[20px] px-4'>{info.text} <GiStarShuriken /></p>
         </div>
     ))}
         </Slider>
