@@ -1,51 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Pagination,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Modal,
   Box,
-  FormControl,
+  Tabs, Tab
 } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
-import user from "../assets/user-NF.svg"
-import { IoCloseSharp } from "react-icons/io5";
+import user from "../assets/user-NF.svg";
+import bannerImg from '../assets/web-banner.png'
 import Checkin from "../components/Checkin";
-import DaySelect from "../components/DaySelect";
+import TableData from "../components/Tabledata";
+import PropTypes from 'prop-types';
+import { AttendanceContext } from "../components/AttendanceContext";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Attendance = () => {
-  const [data, setData] = useState([]);
+  const { day, setDay, data, verified } = useContext(AttendanceContext)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const [userInput, setUserInput] = useState('')
+  const [userInput, setUserInput] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [day, setDay] = useState('');
+  const [value, setValue] = useState(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://web3lagosbackend.onrender.com/api/general-registrations/",
-          {
-            cache: "force-cache",
-          }
-        );
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    setDay(newValue);
+  };
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -53,23 +36,25 @@ const Attendance = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = data?.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleCloseModal = () => setShowModal(false); 
 
   const handleSearch = () => {
+    if(!userInput) {
+      toast.error("Invalid Input", {
+        position: "top-center",
+      });
+    }
+
     const result = data.find(
       (item) =>
-        item.name.toLowerCase().includes(userInput.toLowerCase()) ||
-        item.email.toLowerCase().includes(userInput.toLowerCase())
+        item.name.toLowerCase().includes(userInput.toLowerCase().trim()) ||
+        item.email.toLowerCase().includes(userInput.toLowerCase().trim())
     );
     setSearchResult(result);
+    setUserInput('');
     setShowModal(true);
-    setUserInput('')
-  };
-
-  const handleDayChange = (event) => {
-    setDay(event.target.value);
   };
 
   const style = {
@@ -84,16 +69,46 @@ const Attendance = () => {
     bgcolor: 'background.paper', 
   };
 
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      </div>
+    );
+  }
+
+  CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+  
   return (
     <div>
-            <h2 className='lg:text-[32px] md:text-[32px] text-[24px] font-[500] mb-6'>Check-Ins</h2>
-            <section className="flex justify-between items-center flex-col lg:flex-row md:flex-row">
+      <h2 className='lg:text-[32px] md:text-[32px] text-[24px] font-[500] mb-6'>Check-Ins</h2>
         <div className="border-2 text-gray-500 border-[#0D0042] rounded-lg px-4 py-2 flex my-4 justify-between items-center lg:w-[30%] md:w-[30%] w-[100%]">
           <div className="flex items-center">
             <FaSearch className="mr-4" />
             <input
               type="text"
               placeholder="Search"
+              required
+              value={userInput}
               className="bg-transparent outline-0"
               onChange={(e) => setUserInput(e.target.value)}
             />
@@ -102,64 +117,40 @@ const Attendance = () => {
             <IoIosSend className="text-[#11EBF2]" />
           </button>
         </div>
-        <div className="w-[100%] lg:w-[10%] md:w-[10%] mb-4">
-            <DaySelect day={day} handleDayChange={handleDayChange} />
-          </div>
-        </section>
-        {/* <section className="px-4"> */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead sx={{ backgroundColor: "#0D0042" }}>
-            <TableRow>
-              <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
-              >
-                ID
-              </TableCell>
-              <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
-              >
-                Name
-              </TableCell>
-              <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
-              >
-                Email
-              </TableCell>
-              <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
-              >
-                Location
-              </TableCell>
-              <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
-              >
-                Role
-              </TableCell>
-              <TableCell
-                sx={{ color: "#11EBF2", fontWeight: "700", fontSize: "16px" }}
-              >
-                Status
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentData.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>
-                  {item.country} {item.location}
-                </TableCell>
-                <TableCell>{item.role}</TableCell>
-                <TableCell>Pending</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* </section> */}
+      <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', color: '#0D0042', fontWeight: 'bold'}}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Day 1" {...a11yProps(0)}  sx={{ 
+              '&.Mui-selected': { 
+                color: 'white', 
+                backgroundColor: '#0D0042', 
+              }}} />
+          <Tab label="Day 2" {...a11yProps(1)} 
+           sx={{ 
+            '&.Mui-selected': { 
+              color: 'white', 
+              backgroundColor: '#0D0042',
+            }}}
+            />
+          <Tab label="Day 3" {...a11yProps(2)} 
+           sx={{ 
+            '&.Mui-selected': { 
+              color: 'white', 
+              backgroundColor: '#0D0042',
+            }}}
+          />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+      <TableData currentData={currentData} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+      <TableData currentData={currentData} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+      <TableData currentData={currentData} />
+      </CustomTabPanel>
+    </Box>
       <Pagination
         count={Math.ceil(data.length / itemsPerPage)}
         page={currentPage}
@@ -167,33 +158,32 @@ const Attendance = () => {
         color="primary"
         style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
       />
+
       <div className="px-4">
-      <Modal open={showModal} onClose={handleCloseModal}>
-        <Box sx={style}>
-          {searchResult ? (
+        <Modal open={showModal} onClose={handleCloseModal}>
+          <Box sx={style}>
+            {searchResult ? (
               <div>
-              <div className="bg-cover h-[20vh] bg-left-bottom rounded-tr-[30px] rounded-tl-[30px]" style={{ backgroundImage: `url('https://iq.wiki/_next/image/?url=https%3A%2F%2Fipfs.everipedia.org%2Fipfs%2FQmNzPvwsQK5S27rwu2f9boniL7ZfKV2Vo4Xo9svRUMRcc1&w=3840&q=75')` }}>
+                <div className="bg-cover h-[20vh] bg-left-bottom rounded-tr-[30px] rounded-tl-[30px]" style={{ backgroundImage: `url(${bannerImg})` }}>
+                </div>
+                <div className="py-6 flex flex-col px-8">
+                  <p className="hidden">ID: {searchResult.id}</p>
+                  <p>Name: {searchResult.name}</p>
+                  <p>Email: {searchResult.email}</p>
+                  <p>Location: {searchResult.country}, {searchResult.location}</p>
+                  <p>Role: {searchResult.role}</p>
+                  <Checkin email={searchResult.email} day={day} verified={verified} handleCloseModal={handleCloseModal} />
+                </div>
               </div>
-              <div className="py-6 flex flex-col px-8">
-              <p>ID: {searchResult.id}</p>
-              <p>Name: {searchResult.name}</p>
-              <p>Email: {searchResult.email}</p>
-              <p>Location: {searchResult.country} {searchResult.location}</p>
-              <p>Role: {searchResult.role}</p>
-              <p>Status: Pending</p>
-              <Checkin email={searchResult.email} day={day} />
+            ) : (
+              <div className="p-6 flex flex-col items-center">
+                <p className="my-4 font-[700] text-[20px] text-red-700">User not found!</p>
+                <img src={user} alt="" />
+                <button onClick={handleCloseModal} className="w-[100%] px-6 py-4 my-4 font-[700] rounded-full text-[#0D0042] bg-[#11EBF2]">Retry</button>
               </div>
-              </div>
-          ) : (
-            <div className="p-6 flex flex-col items-center">
-              <IoCloseSharp className="ml-auto text-4xl" onClick={handleCloseModal} />
-              <p className="my-4 font-[700] text-[20px] text-red-700">User not found!</p>
-              <img src={user} alt="" />
-              <button onClick={handleCloseModal} className="w-[100%] px-6 py-2 my-4 font-[700] rounded-full text-[#0D0042] bg-[#11EBF2]">Retry</button>
-            </div>
-          )}
-        </Box>
-      </Modal>
+            )}
+          </Box>
+        </Modal>
       </div>
     </div>
   );

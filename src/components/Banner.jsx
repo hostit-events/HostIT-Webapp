@@ -47,9 +47,9 @@ const Banner = () => {
 
   const announcements = [
     { id: 1, text: "HostIT powered by Lisk" },
-    { id: 2, text: "Web3 Lagos Conference" },
+    { id: 2, text: "Web3 Lagos Conference 24" },
     { id: 3, text: "HostIT" },
-    { id: 4, text: "Web3Bridge at 5 🥳🥳🥳" },
+    { id: 4, text: "Web3Bridge will be 5 🥳🥳🥳" },
     { id: 5, text: "HostIT" },
   ];
 

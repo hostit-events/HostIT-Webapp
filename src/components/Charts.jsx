@@ -1,8 +1,22 @@
-import * as React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { AttendanceContext } from "./AttendanceContext";
 
-const Charts = ({ data }) => {
-  const uData = [4, 0, 0];
+const Charts = () => {
+  const { day, data, verified } = useContext(AttendanceContext)
+  const [uData, setUData] = useState([]);
+  
+  useEffect(() => {
+    const days = [0, 1, 2]
+    const verifiedCounts = days.map(day =>
+      verified.filter(v => v.day === day && v.isPresent === true).length
+    );
+
+    setUData(verifiedCounts);
+
+  }, [data, verified])
+
+  // const uData = [verifiedCounts, verifiedCounts, verifiedCounts];
   const pData = [data.length, data.length, data.length];
   const xLabels = ["Day 1", "Day 2", "Day 3"];
   return (
